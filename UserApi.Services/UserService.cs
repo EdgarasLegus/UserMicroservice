@@ -41,7 +41,7 @@ namespace UserApi.Services
 
                 return operationResult;
             }
-            return await _validationHelper.AddExistingUserValidationError(operationResult);
+            return _validationHelper.AddExistingUserValidationError(operationResult);
         }
 
         public async Task<OperationResult<User>> DeleteUser(int userId)
@@ -56,7 +56,7 @@ namespace UserApi.Services
 
                 return operationResult;
             }
-            return await _validationHelper.AddUserNotFoundValidationError(operationResult);
+            return _validationHelper.AddUserNotFoundValidationError(operationResult);
         }
     }
 }

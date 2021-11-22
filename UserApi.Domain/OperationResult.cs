@@ -8,5 +8,7 @@ namespace UserApi.Domain
     {
         public Status Status { get; set; } = Status.Success;
         public ValidationResult ValidationResult { get; set; } = new ValidationResult();
+
+        
     }
 }

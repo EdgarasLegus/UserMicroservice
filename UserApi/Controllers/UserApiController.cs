@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
+using UserApi.Extensions;
 using UserApi.Models;
 using UserApi.Services;
 
@@ -49,9 +50,9 @@ namespace UserApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{userId}", Name = "Get")]
-        public IActionResult Get(int userId)
+        public async Task<IActionResult> Get(int userId)
         {
-            var user = _userService.GetUserById(userId);
+            var user = await _userService.GetUserById(userId);
             if (user == null)
             {
                 return NotFound();
@@ -78,7 +79,7 @@ namespace UserApi.Controllers
                 //    bus.PubSub.Publish(userModel);
                 return CreatedAtAction(nameof(Get), new { id = userModel.UserId }, userModel);
             }
-            return BadRequest(result.ValidationResult.PropertyValidations);
+            return BadRequest(result.ValidationResult.ToModelState());
         }
 
         /// <summary>  
@@ -97,7 +98,7 @@ namespace UserApi.Controllers
             {
                 return Ok();
             }
-            return NotFound(result.ValidationResult.PropertyValidations);
+            return NotFound(result.ValidationResult.ToModelState());
         }
     }
 }

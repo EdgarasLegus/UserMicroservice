@@ -9,7 +9,7 @@ namespace UserApi.Services
 {
     public interface IValidationHelper
     {
-        Task<OperationResult<User>> AddExistingUserValidationError(OperationResult<User> operationResult);
-        Task<OperationResult<User>> AddUserNotFoundValidationError(OperationResult<User> operationResult);
+        OperationResult<User> AddExistingUserValidationError(OperationResult<User> operationResult);
+        OperationResult<User> AddUserNotFoundValidationError(OperationResult<User> operationResult);
     }
 }

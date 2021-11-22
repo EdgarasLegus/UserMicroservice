@@ -8,5 +8,6 @@ namespace UserApi.Domain
     public class ValidationResult
     {
         public Dictionary<string, List<string>> PropertyValidations = new Dictionary<string, List<string>>();
+
     }
 }

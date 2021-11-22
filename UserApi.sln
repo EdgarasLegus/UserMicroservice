@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApi.ControllerTests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApi.RabbitMQ", "UserApi.RabbitMQ\UserApi.RabbitMQ.csproj", "{DDB7731D-171D-49A0-8296-2ECECCD97754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApi.Services", "UserApi.Services\UserApi.Services.csproj", "{2B681657-EA87-41A6-BA7D-61AF50CDE6DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApi.Services", "UserApi.Services\UserApi.Services.csproj", "{2B681657-EA87-41A6-BA7D-61AF50CDE6DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApi.ServiceTests", "UserApi.ServiceTests\UserApi.ServiceTests.csproj", "{118D8F2B-3162-4B15-9C72-E8EC6F6C2F8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserApi.ServiceTests", "UserApi.ServiceTests\UserApi.ServiceTests.csproj", "{118D8F2B-3162-4B15-9C72-E8EC6F6C2F8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserApi.ModelTests", "UserApi.ModelTests\UserApi.ModelTests.csproj", "{8468A5D4-EEA4-4B68-AC83-301AB039B98C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{118D8F2B-3162-4B15-9C72-E8EC6F6C2F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{118D8F2B-3162-4B15-9C72-E8EC6F6C2F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{118D8F2B-3162-4B15-9C72-E8EC6F6C2F8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8468A5D4-EEA4-4B68-AC83-301AB039B98C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8468A5D4-EEA4-4B68-AC83-301AB039B98C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8468A5D4-EEA4-4B68-AC83-301AB039B98C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8468A5D4-EEA4-4B68-AC83-301AB039B98C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

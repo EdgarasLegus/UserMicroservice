@@ -125,10 +125,9 @@ namespace UserApi.ServiceTests
         public async Task CreateUser_ShouldReturnOperationResultWithValidationErrors()
         {
             //Arrange
-            var operationResult = new OperationResult<User>();
             _userRepositoryMock.GetFirstOrDefault(Arg.Any<Expression<Func<User, bool>>>(),
                 Arg.Any<Func<IQueryable<User>, IIncludableQueryable<User, object>>>()).Returns(_user);
-            _validationHelperMock.AddExistingUserValidationError(operationResult).Returns(_operationResultWithValidationError);
+            _validationHelperMock.AddExistingUserValidationError(Arg.Any<OperationResult<User>>()).Returns(_operationResultWithValidationError);
 
             //Act
             var result = await _userService.CreateUser(_user);
@@ -138,30 +137,31 @@ namespace UserApi.ServiceTests
         }
 
         [Test]
-        public void DeleteUser_ShouldReturnSuccessfulOperationResult()
+        public async Task DeleteUser_ShouldReturnSuccessfulOperationResult()
         {
             //Arrange
-            _userRepositoryMock.GetFirstOrDefault(u => u.UserId.Equals(_user.UserId)).Returns(_user);
+            _userRepositoryMock.GetFirstOrDefault(Arg.Any<Expression<Func<User, bool>>>(),
+                Arg.Any<Func<IQueryable<User>, IIncludableQueryable<User, object>>>()).Returns(_user);
 
             //Act
-            var result = _userService.DeleteUser(_user.UserId);
+            var result = await _userService.DeleteUser(_user.UserId);
 
             //Assert
             _userRepositoryMock.Received(1).Delete(_user);
-            _unitOfWorkMock.Received(1).CommitAsync();
+            await _unitOfWorkMock.Received(1).CommitAsync();
             Assert.AreEqual(Status.Success, result.Status);
         }
 
         [Test]
-        public void DeleteUser_ShouldReturnOperationResultWithValidationErrors()
+        public async Task DeleteUser_ShouldReturnOperationResultWithValidationErrors()
         {
             //Arrange
-            var operationResult = new OperationResult<User>();
-            _userRepositoryMock.GetFirstOrDefault(u => u.UserId.Equals(_user.UserId)).ReturnsNull();
-            _validationHelperMock.AddUserNotFoundValidationError(operationResult).Returns(_operationResultWithNotFoundError);
+            _userRepositoryMock.GetFirstOrDefault(Arg.Any<Expression<Func<User, bool>>>(),
+                Arg.Any<Func<IQueryable<User>, IIncludableQueryable<User, object>>>()).ReturnsNull();
+            _validationHelperMock.AddUserNotFoundValidationError(Arg.Any<OperationResult<User>>()).Returns(_operationResultWithNotFoundError);
 
             //Act
-            var result = _userService.DeleteUser(_user.UserId);
+            var result = await _userService.DeleteUser(_user.UserId);
 
             //Assert
             Assert.AreEqual(Status.NotFound, result.Status);

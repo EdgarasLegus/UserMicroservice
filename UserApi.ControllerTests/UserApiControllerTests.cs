@@ -104,17 +104,17 @@ namespace UserApi.ControllerTests
         }
 
         [TestCase(1)]
-        public void GetById_ShouldReturnOkStatus(int expectedUserId)
+        public async Task GetById_ShouldReturnOkStatus(int expectedUserId)
         {
             //Arrange
             _userServiceMock.GetUserById(_user.UserId).Returns(_user);
             _mapperMock.Map<UserModel>(_user).Returns(_userModel);
 
             //Act
-            var result = _userApiController.Get(_user.UserId) as OkObjectResult;
+            var result = await _userApiController.Get(_user.UserId) as OkObjectResult;
 
             //Assert
-            _userServiceMock.Received().GetUserById(_user.UserId);
+            await _userServiceMock.Received().GetUserById(_user.UserId);
             _mapperMock.Received(1).Map<UserModel>(_user);
 
             Assert.AreEqual(expectedUserId, (result.Value as UserModel).UserId);
@@ -122,13 +122,13 @@ namespace UserApi.ControllerTests
         }
 
         [Test]
-        public void GetById_ShouldReturnNotFoundStatus()
+        public async Task GetById_ShouldReturnNotFoundStatus()
         {
             //Arrange
             _userServiceMock.GetUserById(_user.UserId).ReturnsNull();
 
             //Act
-            var result = _userApiController.Get(_user.UserId) as NotFoundResult;
+            var result = await _userApiController.Get(_user.UserId) as NotFoundResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
@@ -157,7 +157,7 @@ namespace UserApi.ControllerTests
             _userServiceMock.CreateUser(_createdUser).Returns(_operationResultWithValidationError);
 
             //Act
-            var result = await _userApiController.Create(_userPostModel) as BadRequestResult;
+            var result = await _userApiController.Create(_userPostModel) as BadRequestObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.BadRequest, result.StatusCode);
@@ -183,7 +183,7 @@ namespace UserApi.ControllerTests
             _userServiceMock.DeleteUser(_user.UserId).Returns(_operationResultNotFound);
 
             //Act
-            var result = await _userApiController.Delete(_user.UserId) as NotFoundResult;
+            var result = await _userApiController.Delete(_user.UserId) as NotFoundObjectResult;
 
             //Assert
             Assert.AreEqual((int)HttpStatusCode.NotFound, result.StatusCode);
