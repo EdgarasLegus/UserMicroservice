@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UserApi</name>
+    </assembly>
+    <members>
+        <member name="M:UserApi.Controllers.UserApiController.Get">
+            <summary>  
+            Retrieve all users. 
+            </summary>  
+            <returns>Returns all users</returns>  
+            <response code="200">Returned if operation is successful</response>
+        </member>
+        <member name="M:UserApi.Controllers.UserApiController.Get(System.Int32)">
+            <summary>  
+            Retrieve wanted user. 
+            </summary>  
+            <param name="userId">User to find</param>  
+            <returns>Returns found user</returns>  
+            <response code="200">Returned if user was found</response>  
+            <response code="404">Returned if there is no such user</response>
+        </member>
+        <member name="M:UserApi.Controllers.UserApiController.Create(UserApi.Models.UserModel)">
+            <summary>  
+            Create a new user, publish a message to RabbitMQ.  
+            </summary>  
+            <param name="userModel">Model to create a new user</param>  
+            <returns>Returns created user</returns>  
+            <response code="201">Returned if user was created</response>  
+            <response code="400">Returned if there were problems with the creation</response>
+        </member>
+        <member name="M:UserApi.Controllers.UserApiController.Delete(System.Int32)">
+            <summary>  
+            Delete an existing user.  
+            </summary>  
+            <param name="userId">User to delete</param>  
+            <response code="200">Returned if user was deleted</response>  
+            <response code="404">Returned if user was not found</response>
+        </member>
+    </members>
+</doc>
