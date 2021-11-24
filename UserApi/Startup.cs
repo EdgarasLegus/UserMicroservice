@@ -1,4 +1,5 @@
 using AutoMapper;
+using EasyNetQ;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +54,11 @@ namespace UserApi
             services
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped<IValidationHelper, ValidationHelper>()
-                .AddScoped<IUserService, UserService>();
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IMessageBusService, MessageBusService>()
+                .AddSingleton<IBus>(x => RabbitHutch.CreateBus("host=localhost"));
+
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

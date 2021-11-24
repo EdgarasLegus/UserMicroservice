@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
+using UserApi.Domain.Messages;
 
 namespace UserApi.Services
 {
@@ -12,10 +13,13 @@ namespace UserApi.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<User> _userRepository;
         private readonly IValidationHelper _validationHelper;
-        public UserService(IUnitOfWork unitOfWork, IValidationHelper validationHelper)
+        private readonly IMessageBusService _messageBusService;
+        public UserService(IUnitOfWork unitOfWork, IValidationHelper validationHelper, 
+            IMessageBusService messageBusService)
         {
             _unitOfWork = unitOfWork;
             _validationHelper = validationHelper;
+            _messageBusService = messageBusService;
             _userRepository = _unitOfWork.GetRepository<User>();
         }
 
@@ -38,6 +42,12 @@ namespace UserApi.Services
             {
                 await _userRepository.Insert(user);
                 await _unitOfWork.CommitAsync();
+                await _messageBusService.SendMessage(new UserCreatedMessage
+                {
+                    MessageGuid = new Guid(),
+                    UserId = user.UserId,
+                    Email = user.Email
+                });
 
                 return operationResult;
             }

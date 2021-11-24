@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
+using UserApi.Domain.Messages;
 using UserApi.Models;
 using UserApi.Services;
 
@@ -20,10 +21,12 @@ namespace UserApi.ServiceTests
         private IUnitOfWork _unitOfWorkMock;
         private IRepository<User> _userRepositoryMock;
         private IValidationHelper _validationHelperMock;
+        private IMessageBusService _messageBusServiceMock;
         private IUserService _userService;
         private List<User> _users;
         private User _user;
         private User _userToCreate;
+        private UserCreatedMessage _userCreatedMessage;
         private OperationResult<User> _operationResultWithValidationError;
         private OperationResult<User> _operationResultWithNotFoundError;
 
@@ -31,10 +34,11 @@ namespace UserApi.ServiceTests
         public void Setup()
         {
             _validationHelperMock = Substitute.For<IValidationHelper>();
+            _messageBusServiceMock = Substitute.For<IMessageBusService>();
             _unitOfWorkMock = Substitute.For<IUnitOfWork>();
             _userRepositoryMock = Substitute.For<IRepository<User>>();
             _unitOfWorkMock.GetRepository<User>().Returns(_userRepositoryMock);
-            _userService = new UserService(_unitOfWorkMock, _validationHelperMock);
+            _userService = new UserService(_unitOfWorkMock, _validationHelperMock, _messageBusServiceMock);
 
             _user = new User()
             {
@@ -118,6 +122,12 @@ namespace UserApi.ServiceTests
             //Assert
             await _userRepositoryMock.Received(1).Insert(_userToCreate);
             await _unitOfWorkMock.Received(1).CommitAsync();
+            await _messageBusServiceMock.Received(1).SendMessage(new UserCreatedMessage
+            {
+                MessageGuid = new Guid(),
+                UserId = _userToCreate.UserId,
+                Email = _userToCreate.Email
+            });
             Assert.AreEqual(Status.Success, result.Status);
         }
 

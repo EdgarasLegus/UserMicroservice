@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="EasyNetQ" Version="6.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\UserApi.Data\UserApi.Data.csproj" />
     <ProjectReference Include="..\UserApi.Domain\UserApi.Domain.csproj" />
   </ItemGroup>

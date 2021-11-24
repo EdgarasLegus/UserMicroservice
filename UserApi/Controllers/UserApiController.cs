@@ -75,8 +75,8 @@ namespace UserApi.Controllers
             var result = await _userService.CreateUser(_mapper.Map<User>(userModel));
             if (result.Status != Status.ValidationError)
             {
-                //var bus = RabbitHutch.CreateBus("host=localhost");
-                //    bus.PubSub.Publish(userModel);
+                var bus = RabbitHutch.CreateBus("host=localhost");
+                    bus.PubSub.Publish(userModel);
                 return CreatedAtAction(nameof(Get), new { id = userModel.UserId }, userModel);
             }
             return BadRequest(result.ValidationResult.ToModelState());
