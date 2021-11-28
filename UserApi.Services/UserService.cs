@@ -38,20 +38,21 @@ namespace UserApi.Services
             var operationResult = new OperationResult<User>();
             var existingUserWithSameEmail = await _userRepository.GetFirstOrDefault(u => u.Email.Equals(user.Email));
 
-            if (existingUserWithSameEmail == null)
+            if (existingUserWithSameEmail != null)
             {
-                await _userRepository.Insert(user);
-                await _unitOfWork.CommitAsync();
-                await _messageBusService.SendMessage(new UserCreatedMessage
-                {
-                    MessageGuid = new Guid(),
-                    UserId = user.UserId,
-                    Email = user.Email
-                });
-
-                return operationResult;
+                return _validationHelper.AddExistingUserValidationError(operationResult);
             }
-            return _validationHelper.AddExistingUserValidationError(operationResult);
+
+            await _userRepository.Insert(user);
+            await _unitOfWork.CommitAsync();
+            await _messageBusService.SendMessage(new UserCreatedMessage
+            {
+                MessageGuid = Guid.NewGuid(),
+                UserId = user.UserId,
+                Email = user.Email
+            });
+
+            return operationResult;
         }
 
         public async Task<OperationResult<User>> DeleteUser(int userId)
@@ -59,14 +60,14 @@ namespace UserApi.Services
             var operationResult = new OperationResult<User>();
             var existingUser = await _userRepository.GetFirstOrDefault(u => u.UserId.Equals(userId));
 
-            if (existingUser != null)
+            if (existingUser == null)
             {
-                _userRepository.Delete(existingUser);
-                await _unitOfWork.CommitAsync();
-
-                return operationResult;
+                return _validationHelper.AddUserNotFoundValidationError(operationResult);
             }
-            return _validationHelper.AddUserNotFoundValidationError(operationResult);
+            _userRepository.Delete(existingUser);
+            await _unitOfWork.CommitAsync();
+
+            return operationResult;
         }
     }
 }

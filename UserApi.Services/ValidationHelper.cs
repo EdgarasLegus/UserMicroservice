@@ -20,7 +20,7 @@ namespace UserApi.Services
         public OperationResult<User> AddUserNotFoundValidationError(OperationResult<User> operationResult)
         {
             operationResult.ValidationResult.PropertyValidations
-                .Add(nameof(User.Email), new List<string> { "A user with this id does not exists!" });
+                .Add(nameof(User.UserId), new List<string> { "A user with this id does not exists!" });
             operationResult.Status = Status.NotFound;
             return operationResult;
         }
