@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
-using UserApi.Domain.Messages;
+using UserApi.Messages;
 
 namespace UserApi.Services
 {

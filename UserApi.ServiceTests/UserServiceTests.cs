@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
-using UserApi.Domain.Messages;
+using UserApi.Messages;
 using UserApi.Models;
 using UserApi.Services;
 
@@ -116,13 +116,14 @@ namespace UserApi.ServiceTests
             _userRepositoryMock.GetFirstOrDefault(Arg.Any<Expression<Func<User, bool>>>(),
                 Arg.Any<Func<IQueryable<User>, IIncludableQueryable<User, object>>>()).ReturnsNull();
 
+
             //Act
             var result = await _userService.CreateUser(_userToCreate);
 
             //Assert
             await _userRepositoryMock.Received(1).Insert(_userToCreate);
             await _unitOfWorkMock.Received(1).CommitAsync();
-            await _messageBusServiceMock.Received(1).SendMessage(new UserCreatedMessage
+            await _messageBusServiceMock.Received().SendMessage(new UserCreatedMessage
             {
                 MessageGuid = new Guid(),
                 UserId = _userToCreate.UserId,

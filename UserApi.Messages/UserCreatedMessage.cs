@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using EasyNetQ;
 
-namespace UserApi.Domain.Messages
+namespace UserApi.Messages
 {
-    [Queue("UserQueue", ExchangeName = "UserExchange")]
+    //[Queue("user_creation", ExchangeName = "UserCreationExchange")]
     public class UserCreatedMessage
     {
         public Guid MessageGuid { get; set; }

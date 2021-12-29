@@ -25,6 +25,7 @@ namespace UserApi
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -57,8 +58,7 @@ namespace UserApi
                 .AddScoped<IValidationHelper, ValidationHelper>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IMessageBusService, MessageBusService>()
-                .AddSingleton<IBus>(x => RabbitHutch.CreateBus("host=localhost;publisherConfirms=true;timeout=10",
-                    x => LogProvider.SetCurrentLogProvider(ConsoleLogProvider.Instance)));
+                .AddSingleton<IBus>(RabbitHutch.CreateBus("host=localhost"));
 
           
         }
