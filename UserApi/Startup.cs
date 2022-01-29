@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using UserApi.Data;
 using UserApi.Data.DataAccess;
 using UserApi.Services;
+using UserApi.Services.Communication;
+using UserApi.Services.LogicHelpers;
 
 namespace UserApi
 {

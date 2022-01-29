@@ -13,6 +13,8 @@ using UserApi.Domain.Entities;
 using UserApi.Messages;
 using UserApi.Models;
 using UserApi.Services;
+using UserApi.Services.Communication;
+using UserApi.Services.LogicHelpers;
 
 namespace UserApi.ServiceTests
 {

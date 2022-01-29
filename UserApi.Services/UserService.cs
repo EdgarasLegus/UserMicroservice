@@ -5,6 +5,8 @@ using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
 using UserApi.Messages;
+using UserApi.Services.Communication;
+using UserApi.Services.LogicHelpers;
 
 namespace UserApi.Services
 {
