@@ -12,6 +12,7 @@ using UserApi.Domain;
 using UserApi.Domain.Entities;
 using UserApi.Models;
 using UserApi.Services;
+using UserApi.Services.Services;
 
 namespace UserApi.ControllerTests
 {

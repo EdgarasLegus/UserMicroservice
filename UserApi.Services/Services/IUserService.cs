@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
 
-namespace UserApi.Services
+namespace UserApi.Services.Services
 {
     public interface IUserService
     {

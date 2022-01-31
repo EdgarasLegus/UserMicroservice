@@ -8,7 +8,7 @@ using UserApi.Messages;
 using UserApi.Services.Communication;
 using UserApi.Services.LogicHelpers;
 
-namespace UserApi.Services
+namespace UserApi.Services.Services
 {
     public class UserService : IUserService
     {
@@ -62,14 +62,14 @@ namespace UserApi.Services
             var operationResult = new OperationResult<User>();
             var existingUser = await _userRepository.GetFirstOrDefault(u => u.UserId.Equals(userId));
 
-            if (existingUser == null)
+            if (existingUser != null)
             {
-                return _validationHelper.AddUserNotFoundValidationError(operationResult);
-            }
-            _userRepository.Delete(existingUser);
-            await _unitOfWork.CommitAsync();
+                _userRepository.Delete(existingUser);
+                await _unitOfWork.CommitAsync();
 
-            return operationResult;
+                return operationResult;
+            }
+            return _validationHelper.AddUserNotFoundValidationError(operationResult);
         }
     }
 }

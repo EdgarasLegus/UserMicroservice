@@ -19,6 +19,7 @@ using UserApi.Data.DataAccess;
 using UserApi.Services;
 using UserApi.Services.Communication;
 using UserApi.Services.LogicHelpers;
+using UserApi.Services.Services;
 
 namespace UserApi
 {

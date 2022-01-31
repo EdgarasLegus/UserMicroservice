@@ -9,6 +9,7 @@ using UserApi.Domain.Entities;
 using UserApi.Extensions;
 using UserApi.Models;
 using UserApi.Services;
+using UserApi.Services.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
