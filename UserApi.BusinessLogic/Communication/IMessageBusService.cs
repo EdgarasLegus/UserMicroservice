@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EasyNetQ;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserApi.Services.Communication
+namespace UserApi.BusinessLogic.Communication
 {
     public interface IMessageBusService
     {

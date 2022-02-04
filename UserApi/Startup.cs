@@ -1,6 +1,7 @@
-using AutoMapper;
+using Autofac;
+using Autofac.Core;
+using Autofac.Extensions.DependencyInjection;
 using EasyNetQ;
-using EasyNetQ.Logging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,18 +9,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SimpleInjector;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-using UserApi.Data;
+using UserApi.BusinessLogic.Communication;
+using UserApi.BusinessLogic.EventServices;
+using UserApi.BusinessLogic.LogicHelpers;
+using UserApi.BusinessLogic.Services;
 using UserApi.Data.DataAccess;
-using UserApi.Services;
-using UserApi.Services.Communication;
-using UserApi.Services.LogicHelpers;
-using UserApi.Services.Services;
 
 namespace UserApi
 {
@@ -36,6 +34,8 @@ namespace UserApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var builder = new ContainerBuilder();
+
             services.AddRazorPages();
             services.AddDbContext<UserContext>(o => o.UseSqlServer(Configuration.GetConnectionString("MS_User")));
 
@@ -56,14 +56,26 @@ namespace UserApi
                 c.IncludeXmlComments(xmlPath);
             });
 
+            //var rabbitMq = RabbitHutch.CreateBus("host=localhost");
+
             services
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddScoped<IValidationHelper, ValidationHelper>()
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IMessageBusService, MessageBusService>()
-                .AddSingleton<IBus>(RabbitHutch.CreateBus("host=localhost"));
+                .AddScoped<IUserEventService, UserEventService>()
+                .AddSingleton(sp => RabbitHutch.CreateBus("host=localhost"));
 
-          
+
+            //builder.Populate(services);
+            //var container = builder.Build();
+            //var bus = container.Resolve<IBus>();
+
+            //.Resolve<IBus>(() => RabbitHutch.CreateBus(""));
+            //.AddSingleton<IBus>(RabbitHutch.CreateBus("host=localhost"));
+
+            //return new AutofacServiceProvider(container);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

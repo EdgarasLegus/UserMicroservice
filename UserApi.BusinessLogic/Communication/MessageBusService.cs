@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserApi.Services.Communication
+namespace UserApi.BusinessLogic.Communication
 {
     public class MessageBusService : IMessageBusService
     {

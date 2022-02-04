@@ -4,25 +4,26 @@ using System.Threading.Tasks;
 using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
-using UserApi.Messages;
-using UserApi.Services.Communication;
-using UserApi.Services.LogicHelpers;
+using UserApi.BusinessLogic.Communication;
+using UserApi.BusinessLogic.LogicHelpers;
+using UserApi.BusinessLogic.EventServices;
 
-namespace UserApi.Services.Services
+namespace UserApi.BusinessLogic.Services
 {
     public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<User> _userRepository;
         private readonly IValidationHelper _validationHelper;
-        private readonly IMessageBusService _messageBusService;
+        private readonly IUserEventService _userEventService;
+
         public UserService(IUnitOfWork unitOfWork, IValidationHelper validationHelper, 
-            IMessageBusService messageBusService)
+            IUserEventService userEventService)
         {
             _unitOfWork = unitOfWork;
             _validationHelper = validationHelper;
-            _messageBusService = messageBusService;
             _userRepository = _unitOfWork.GetRepository<User>();
+            _userEventService = userEventService;
         }
 
         public IEnumerable<User> GetUsers()
@@ -47,12 +48,7 @@ namespace UserApi.Services.Services
 
             await _userRepository.Insert(user);
             await _unitOfWork.CommitAsync();
-            await _messageBusService.SendMessage(new UserCreatedMessage
-            {
-                MessageGuid = Guid.NewGuid(),
-                UserId = user.UserId,
-                Email = user.Email
-            });
+            await _userEventService.SendCreatedUserInformation(user);
 
             return operationResult;
         }
@@ -66,6 +62,7 @@ namespace UserApi.Services.Services
             {
                 _userRepository.Delete(existingUser);
                 await _unitOfWork.CommitAsync();
+                await _userEventService.SendWhenUserDeleted(userId);
 
                 return operationResult;
             }

@@ -7,12 +7,11 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using UserApi.BusinessLogic.Services;
 using UserApi.Controllers;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
 using UserApi.Models;
-using UserApi.Services;
-using UserApi.Services.Services;
 
 namespace UserApi.ControllerTests
 {
@@ -28,14 +27,12 @@ namespace UserApi.ControllerTests
         private OperationResult<User> _operationResultWithSuccess;
         private OperationResult<User> _operationResultNotFound;
         private OperationResult<User> _operationResultWithValidationError;
-        private IBus _busMock;
 
         [SetUp]
         public void Setup()
         {
             _userServiceMock = Substitute.For<IUserService>();
             _mapperMock = Substitute.For<IMapper>();
-            _busMock = Substitute.For<IBus>();
             _userApiController = new UserApiController(_userServiceMock, _mapperMock);
 
             _user = new User()
@@ -139,7 +136,6 @@ namespace UserApi.ControllerTests
         public async Task Create_ShouldCreateNewUser()
         {
             //Arrange
-            //_busMock.RabbitHutch.C
             _mapperMock.Map<User>(_userPostModel).Returns(_createdUser);
             _userServiceMock.CreateUser(_createdUser).Returns(_operationResultWithSuccess);
 

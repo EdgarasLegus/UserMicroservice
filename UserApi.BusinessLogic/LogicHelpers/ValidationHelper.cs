@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
 
-namespace UserApi.Services.LogicHelpers
+namespace UserApi.BusinessLogic.LogicHelpers
 {
     public class ValidationHelper : IValidationHelper
     {

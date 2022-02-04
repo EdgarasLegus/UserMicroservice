@@ -4,18 +4,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UserApi.BusinessLogic.Services;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
 using UserApi.Extensions;
 using UserApi.Models;
-using UserApi.Services;
-using UserApi.Services.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace UserApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/user")]
     [ApiController]
     public class UserApiController : ControllerBase
     {

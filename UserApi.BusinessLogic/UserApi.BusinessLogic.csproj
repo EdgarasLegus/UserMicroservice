@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UserApi.Data\UserApi.Data.csproj" />
     <ProjectReference Include="..\UserApi.Domain\UserApi.Domain.csproj" />
-    <ProjectReference Include="..\UserApi.Messages\UserApi.Messages.csproj" />
+    <ProjectReference Include="..\UserApi.Events\UserApi.Events.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,15 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using UserApi.BusinessLogic.Communication;
+using UserApi.BusinessLogic.EventServices;
+using UserApi.BusinessLogic.LogicHelpers;
+using UserApi.BusinessLogic.Services;
 using UserApi.Data.DataAccess;
 using UserApi.Domain;
 using UserApi.Domain.Entities;
-using UserApi.Messages;
-using UserApi.Models;
-using UserApi.Services;
-using UserApi.Services.Communication;
-using UserApi.Services.LogicHelpers;
-using UserApi.Services.Services;
+using UserApi.Events.PublishingEvents;
 
 namespace UserApi.ServiceTests
 {
@@ -24,12 +23,12 @@ namespace UserApi.ServiceTests
         private IUnitOfWork _unitOfWorkMock;
         private IRepository<User> _userRepositoryMock;
         private IValidationHelper _validationHelperMock;
-        private IMessageBusService _messageBusServiceMock;
+        private IUserEventService _userEventServiceMock;
         private IUserService _userService;
         private List<User> _users;
         private User _user;
         private User _userToCreate;
-        private UserCreatedMessage _userCreatedMessage;
+        private UserCreatedEvent _userCreatedMessage;
         private OperationResult<User> _operationResultWithValidationError;
         private OperationResult<User> _operationResultWithNotFoundError;
 
@@ -37,11 +36,11 @@ namespace UserApi.ServiceTests
         public void Setup()
         {
             _validationHelperMock = Substitute.For<IValidationHelper>();
-            _messageBusServiceMock = Substitute.For<IMessageBusService>();
+            _userEventServiceMock = Substitute.For<IUserEventService>();
             _unitOfWorkMock = Substitute.For<IUnitOfWork>();
             _userRepositoryMock = Substitute.For<IRepository<User>>();
             _unitOfWorkMock.GetRepository<User>().Returns(_userRepositoryMock);
-            _userService = new UserService(_unitOfWorkMock, _validationHelperMock, _messageBusServiceMock);
+            _userService = new UserService(_unitOfWorkMock, _validationHelperMock, _userEventServiceMock);
 
             _user = new User()
             {
@@ -126,12 +125,7 @@ namespace UserApi.ServiceTests
             //Assert
             await _userRepositoryMock.Received(1).Insert(_userToCreate);
             await _unitOfWorkMock.Received(1).CommitAsync();
-            await _messageBusServiceMock.Received().SendMessage(new UserCreatedMessage
-            {
-                MessageGuid = new Guid(),
-                UserId = _userToCreate.UserId,
-                Email = _userToCreate.Email
-            });
+            await _userEventServiceMock.Received(1).SendCreatedUserInformation(_userToCreate);
             Assert.AreEqual(Status.Success, result.Status);
         }
 
@@ -163,6 +157,7 @@ namespace UserApi.ServiceTests
             //Assert
             _userRepositoryMock.Received(1).Delete(_user);
             await _unitOfWorkMock.Received(1).CommitAsync();
+            await _userEventServiceMock.Received(1).SendWhenUserDeleted(_user.UserId);
             Assert.AreEqual(Status.Success, result.Status);
         }
 
