@@ -1,5 +1,4 @@
 using AutoMapper;
-using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;

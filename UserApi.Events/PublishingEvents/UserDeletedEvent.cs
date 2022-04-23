@@ -6,7 +6,7 @@ using EasyNetQ;
 
 namespace UserApi.Events.PublishingEvents
 {
-    [Queue("userapi_userexport", ExchangeName = "UserDeletedExchange")]
+    //[Queue("userapi_userDeletion", ExchangeName = "UserDeletedExchange")]
     public class UserDeletedEvent : OperationEvent
     {
         public int UserId { get; set; }

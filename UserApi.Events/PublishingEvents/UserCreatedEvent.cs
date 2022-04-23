@@ -6,7 +6,7 @@ using UserApi.Events.Abstractions;
 
 namespace UserApi.Events.PublishingEvents
 {
-    [Queue("userapi_userexport", ExchangeName = "UserCreatedExchange")]
+    //[Queue("userapi_userCreation", ExchangeName = "UserCreationExchange")]
     public class UserCreatedEvent : OperationEvent
     {
         public int UserId { get; set; }
