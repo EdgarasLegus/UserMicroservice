@@ -64,6 +64,7 @@ namespace UserApi
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IMessageBusService, MessageBusService>()
                 .AddScoped<IUserEventService, UserEventService>()
+                .AddScoped<IAttributeExtractionHelper, AttributeExtractionHelper>()
                 .AddSingleton(sp => RabbitHutch.CreateBus("host=localhost"));
 
 

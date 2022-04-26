@@ -9,6 +9,6 @@ namespace UserApi.BusinessLogic.Communication
 {
     public interface IMessageBusService
     {
-        Task SendMessage<TMessage>(TMessage message, string exchange, string queue) where TMessage : OperationEvent;
+        Task SendMessage<TMessage>(TMessage message, string exchange, string routingKey) where TMessage : OperationEvent;
     }
 }

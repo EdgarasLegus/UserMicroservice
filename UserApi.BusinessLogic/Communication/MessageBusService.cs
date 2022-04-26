@@ -17,10 +17,10 @@ namespace UserApi.BusinessLogic.Communication
             _bus = bus;
         }
 
-        public async Task SendMessage<TMessage>(TMessage message, string exchange, string queue) where TMessage : OperationEvent
+        public async Task SendMessage<TMessage>(TMessage message, string exchange, string routingKey) where TMessage : OperationEvent
         {
-            var routingKey = "userapi_userCreation";
-            var wrappedQueue = _bus.Advanced.QueueDeclare(queue);
+            //var routingKey = "userapi_userCreation";
+            //var wrappedQueue = _bus.Advanced.QueueDeclare(queue);
             var wrappedExchange = _bus.Advanced.ExchangeDeclare(exchange, ExchangeType.Topic);
             //var binding = _bus.Advanced.Bind(wrappedExchange, wrappedQueue, routingKey);
 

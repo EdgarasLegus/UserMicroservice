@@ -11,6 +11,8 @@ namespace UserApi.Events.PublishingEvents
     {
         public int UserId { get; set; }
         public string Email { get; set; }
+        public string Exchange { get; set; } = "UserCreationExchange";
+        public string RoutingKey { get; set; } = "userapi_userCreation";
 
         public UserCreatedEvent(int userId, string email)
         {
